@@ -5,6 +5,8 @@ describe Oystercard do
 subject(:travelcard) {described_class.new}
 subject(:empty_travelcard) {described_class.new}
 
+let(:station) {double :station }
+
 before(:each) do
   travelcard.top_up(20)
 end
@@ -39,12 +41,17 @@ end
  end
 
  it "should set in_journey to true when we touch in" do
-   travelcard.touch_in
+   travelcard.touch_in(station)
    expect(travelcard.in_journey?).to be_truthy
  end
 
  it "should reduce balance by 5 when you touch out" do
    expect { travelcard.touch_out }.to change{travelcard.balance}.by(-5)
+ end
+
+ it "should remember the station you touch in at" do
+   travelcard.touch_in(station)
+   expect(travelcard.entry_station).to eq station
  end
 
 describe "error handling" do
@@ -56,7 +63,7 @@ describe "error handling" do
 
   it "should raise an error when trying to touch in with not enough balance" do
     message = "Pauper"
-    expect { empty_travelcard.touch_in }.to raise_error(RuntimeError, message)
+    expect { empty_travelcard.touch_in(station) }.to raise_error(RuntimeError, message)
   end
 
 end
