@@ -54,6 +54,12 @@ end
    expect(travelcard.entry_station).to eq station
  end
 
+ it "should forget the entry station when you touch out" do
+   travelcard.touch_in(station)
+   travelcard.touch_out
+   expect(travelcard.entry_station).to eq nil
+ end
+
 describe "error handling" do
 
   it "should raise an error when a top up takes the balance over 90" do
