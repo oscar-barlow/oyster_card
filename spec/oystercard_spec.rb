@@ -92,6 +92,16 @@ describe Oystercard do
       expect(travelcard.journeys.count).to eq 2
     end
 
+    it "has an empty list of journeys by default" do
+      expect(travelcard.journeys).to be_empty
+    end
+
+    it "creates one journey when you touch in and then touch out" do
+      travelcard.touch_in(entry_station)
+      travelcard.touch_out(exit_station)
+      expect(travelcard.journeys.length).to be 1
+    end
+
   end
 
   describe "error handling" do
