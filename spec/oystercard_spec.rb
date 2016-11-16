@@ -5,7 +5,8 @@ describe Oystercard do
 subject(:travelcard) {described_class.new}
 subject(:empty_travelcard) {described_class.new}
 
-let(:station) {double :station }
+let(:entry_station) {double :entry_station }
+let(:exit_station) {double :exit_station}
 
 before(:each) do
   travelcard.top_up(20)
@@ -32,7 +33,7 @@ it "should respond to 'in_journey'" do
 end
 
 it "should tell us if we are not in journey" do
-  travelcard.touch_out
+  travelcard.touch_out(exit_station)
   expect(travelcard.in_journey?).to be_falsey
 end
 
@@ -41,23 +42,34 @@ end
  end
 
  it "should set in_journey to true when we touch in" do
-   travelcard.touch_in(station)
+   travelcard.touch_in(entry_station)
    expect(travelcard.in_journey?).to be_truthy
  end
 
  it "should reduce balance by 5 when you touch out" do
-   expect { travelcard.touch_out }.to change{travelcard.balance}.by(-5)
+   expect { travelcard.touch_out(exit_station) }.to change{travelcard.balance}.by(-5)
  end
 
  it "should remember the station you touch in at" do
-   travelcard.touch_in(station)
-   expect(travelcard.entry_station).to eq station
+   travelcard.touch_in(entry_station)
+   expect(travelcard.entry_station).to eq entry_station
  end
 
  it "should forget the entry station when you touch out" do
-   travelcard.touch_in(station)
-   travelcard.touch_out
+   travelcard.touch_in(entry_station)
+   travelcard.touch_out(exit_station)
    expect(travelcard.entry_station).to eq nil
+ end
+
+ it "should remember the exit station when you touch out" do
+   travelcard.touch_out(exit_station)
+   expect(travelcard.exit_station).to eq exit_station
+ end
+
+ it "shoud store the entry and exit station in a single variable" do
+   travelcard.touch_in(entry_station)
+   travelcard.touch_out(exit_station)
+   expect(travelcard.journey).to include(:entry_station => entry_station, :exit_station => exit_station)
  end
 
 describe "error handling" do
@@ -69,7 +81,7 @@ describe "error handling" do
 
   it "should raise an error when trying to touch in with not enough balance" do
     message = "Pauper"
-    expect { empty_travelcard.touch_in(station) }.to raise_error(RuntimeError, message)
+    expect { empty_travelcard.touch_in(entry_station) }.to raise_error(RuntimeError, message)
   end
 
 end
