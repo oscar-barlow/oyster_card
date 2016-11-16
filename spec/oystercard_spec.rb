@@ -22,9 +22,9 @@ it "should expect the balance to increase when card is topped up" do
 end
 
 it "should raise an error when a top up takes the balance over 90" do
+  message = "Top up too much. Maximum balance is £90."
   subject.top_up(Oystercard::MAXIMUM_BALANCE)
-  expect { subject.top_up(1) }.to raise_error("Top up too much. Maximum balance is £90. Current
-  balance is #{subject.balance}")
+  expect { subject.top_up(1) }.to raise_error(RuntimeError, message)
 end
 
 it "should respond to 'fare'" do
@@ -43,11 +43,16 @@ end
 
 it "should tell us if we are not in journey" do
   travelcard.touch_out
-  expect(travelcard.in_journey?).to eq false
+  expect(travelcard.in_journey?).to be_falsey
 end
 
  it "should initialize with a in_journey value of false" do
-   expect(travelcard.in_journey?).to eq false
+   expect(travelcard.in_journey?).to be_falsey
  end
- 
+
+ it "should set in_journey to true when we touch in" do
+   travelcard.touch_in
+   expect(travelcard.in_journey?).to be_truthy
+ end
+
 end
