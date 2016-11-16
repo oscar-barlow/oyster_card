@@ -25,15 +25,6 @@ it "should expect the balance to increase when card is topped up" do
   expect(travelcard.balance).to eq 20
 end
 
-it "should respond to 'fare'" do
-  expect(travelcard).to respond_to(:deduct)
-end
-
-it "should expect the balance to decrease when a fare is charged" do
-  travelcard.deduct(5)
-  expect(travelcard.balance).to eq 15
-end
-
 it "should respond to 'in_journey'" do
   expect(travelcard).to respond_to(:in_journey?)
 end
@@ -50,6 +41,10 @@ end
  it "should set in_journey to true when we touch in" do
    travelcard.touch_in
    expect(travelcard.in_journey?).to be_truthy
+ end
+
+ it "should reduce balance by 5 when you touch out" do
+   expect { travelcard.touch_out }.to change{travelcard.balance}.by(-5)
  end
 
 describe "error handling" do

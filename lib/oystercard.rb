@@ -11,12 +11,8 @@ class Oystercard
   end
 
   def top_up(amount)
-    fail "Top up too much. Maximum balance is £90." if @balance + amount > MAXIMUM_BALANCE
+    fail "Top up too much. Maximum balance is £90." if makes_card_full?(amount)
     @balance += amount
-  end
-
-  def deduct(fare)
-    @balance -= fare
   end
 
   def in_journey?
@@ -24,12 +20,27 @@ class Oystercard
   end
 
   def touch_out
+    deduct(5)
     @in_journey = false
   end
 
   def touch_in
-    fail "Pauper" if @balance < MINIMUM_BALANCE
+    fail "Pauper" if below_minimum_balance?
     @in_journey = true
   end
+
+  def makes_card_full?(amount)
+    @balance + amount > MAXIMUM_BALANCE
+  end
+
+  def below_minimum_balance?
+    @balance < MINIMUM_BALANCE
+  end
+
+  private
+
+    def deduct(fare)
+      @balance -= fare
+    end
 
 end
