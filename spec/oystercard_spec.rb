@@ -52,24 +52,26 @@ end
 
  it "should remember the station you touch in at" do
    travelcard.touch_in(entry_station)
-   expect(travelcard.entry_station).to eq entry_station
+   expect(travelcard.journey[:entry_station]).to eq entry_station
  end
 
  it "should forget the entry station when you touch out" do
    travelcard.touch_in(entry_station)
    travelcard.touch_out(exit_station)
-   expect(travelcard.entry_station).to eq nil
+   expect(travelcard.journey[:entry_station]).to eq nil
  end
 
  it "should remember the exit station when you touch out" do
    travelcard.touch_out(exit_station)
-   expect(travelcard.exit_station).to eq exit_station
+   expect(travelcard.journey[:exit_station]).to eq exit_station
  end
 
- it "shoud store the entry and exit station in a single variable" do
-   travelcard.touch_in(entry_station)
-   travelcard.touch_out(exit_station)
-   expect(travelcard.journey).to include(:entry_station => entry_station, :exit_station => exit_station)
+ it 'can store more than 1 journey' do
+   2.times {
+     travelcard.touch_in(entry_station)
+     travelcard.touch_out(exit_station)
+   }
+   expect(travelcard.journeys.count).to eq 2
  end
 
 describe "error handling" do
