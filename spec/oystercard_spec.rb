@@ -2,6 +2,8 @@ require "oystercard"
 
 describe Oystercard do
 
+subject(:travelcard) {described_class.new}
+
 it "should respond to balance" do
   expect(subject).to respond_to(:balance)
 end
@@ -39,5 +41,13 @@ it "should respond to 'in_journey'" do
   expect(subject).to respond_to(:in_journey?)
 end
 
+it "should tell us if we are not in journey" do
+  travelcard.touch_out
+  expect(travelcard.in_journey?).to eq false
+end
 
+ it "should initialize with a in_journey value of false" do
+   expect(travelcard.in_journey?).to eq false
+ end
+ 
 end
