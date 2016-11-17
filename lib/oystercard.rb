@@ -25,9 +25,9 @@ class Oystercard
 
   def touch_out(station)
     deduct(FARE)
-    clear_entry_station
     add_station_to_journey_hash("exit_station", station)
-    add_journey_to_journeys_list(@journey)
+    add_journey_to_journeys_list
+    clear_entry_station
   end
 
   def touch_in(station)
@@ -51,7 +51,7 @@ class Oystercard
     @journey[key.to_sym] = station
   end
 
-  def add_journey_to_journeys_list(journey)
+  def add_journey_to_journeys_list
     @journeys << @journey
   end
 
