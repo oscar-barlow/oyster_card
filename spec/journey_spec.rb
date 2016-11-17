@@ -25,7 +25,8 @@ describe Journey do
   describe '#in_journey?' do
 
     it 'returns true if the journey is incomplete' do
-      journey = create_journey(origin: "Aldgate")
+      journey = create_journey(origin: nil, destination: nil)
+      journey.begin("Aldgate")
       expect(journey.in_journey?).to be_truthy
     end
 
@@ -36,6 +37,15 @@ describe Journey do
 
   end
 
+  describe '#add_station_to_current_journey_hash' do
+
+    it 'adds the origin station to current journey hash' do
+      journey = create_journey(origin: nil, destination: nil)
+      journey.begin("Aldgate")
+      expect(journey.current_journey[:origin]).to eq "Aldgate"
+    end
+
+  end
 end
 
 def create_journey(arguments)
