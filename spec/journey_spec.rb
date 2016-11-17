@@ -44,4 +44,28 @@ describe Journey do
     end
   end
 
+  describe '#fare' do
+
+    it "responds to .fare" do
+      expect(journey).to respond_to :fare
+    end
+
+    it "should return the minimum fare" do
+      journey.begin("Aldgate")
+      journey.terminate("Kings Cross")
+      expect(journey.fare).to eq Journey::MINIMUM_FARE
+    end
+
+    it "should return a pentaly fare if you terminate without an exit station" do
+      journey.begin("Aldgate")
+      expect(journey.fare).to eq Journey::PENALTY_FARE
+    end
+
+    it "should return a penalty fare if you terminate without an entry station" do
+      journey.terminate("Kings Cross")
+      expect(journey.fare).to eq Journey::PENALTY_FARE
+    end
+
+  end
+
 end
