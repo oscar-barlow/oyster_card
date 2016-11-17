@@ -2,8 +2,8 @@ require "oystercard"
 
 describe Oystercard do
 
-  subject(:travelcard) {described_class.new}
-  subject(:empty_travelcard) {described_class.new}
+  subject(:travelcard) {described_class.new(Journey)}
+  subject(:empty_travelcard) {described_class.new(Journey)}
 
   let(:entry_station) {double :entry_station }
   let(:exit_station) {double :exit_station}
@@ -60,24 +60,9 @@ describe Oystercard do
 
   describe 'touching in and out' do
 
-    it "should reduce balance by 5 when you touch out" do
-      expect { travelcard.touch_out(exit_station) }.to change{travelcard.balance}.by(-5)
-    end
-
-    it "should remember the station you touch in at" do
+    it "should reduce balance by #{Journey::MINIMUM_FARE} when you touch out" do
       travelcard.touch_in(entry_station)
-      expect(travelcard.journey[:entry_station]).to eq entry_station
-    end
-
-    it "should forget the entry station when you touch out" do
-      travelcard.touch_in(entry_station)
-      travelcard.touch_out(exit_station)
-      expect(travelcard.journey[:entry_station]).to eq nil
-    end
-
-    it "should remember the exit station when you touch out" do
-      travelcard.touch_out(exit_station)
-      expect(travelcard.journey[:exit_station]).to eq exit_station
+      expect { travelcard.touch_out(exit_station) }.to change{travelcard.balance}.by(-Journey::MINIMUM_FARE)
     end
 
   end

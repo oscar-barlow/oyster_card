@@ -19,13 +19,14 @@ class Oystercard
   end
 
   def in_journey?
-    @journey.in_journey? != nil
+    @journey.in_journey?
   end
 
   def touch_out(station)
     @journey.terminate(station)
     deduct(@journey.fare)
     add_journey_to_journeys_list
+    @journey = Journey.new
   end
 
   def touch_in(station)
