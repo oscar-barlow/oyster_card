@@ -1,9 +1,9 @@
 class Journey
 
-  attr_reader :current_journey,
+  attr_reader :current_journey
 
   def initialize
-    @current_journey = {:origin, :destination}
+    @current_journey = {origin: nil, destination: nil}
   end
 
   def in_journey?
@@ -11,14 +11,14 @@ class Journey
   end
 
   def begin(station)
-    add_station_to_current_journey(:origin ,station)
+    add_station_to_current_journey(:origin, station)
   end
 
   def terminate(station)
-    add_station_to_current_journey("destination",station)
+    add_station_to_current_journey(:destination, station)
   end
 
-  def add_station_to_current_journey(point,station)
+  def add_station_to_current_journey(point, station)
     @current_journey[point] = station
   end
 
