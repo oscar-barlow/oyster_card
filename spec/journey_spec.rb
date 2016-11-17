@@ -17,18 +17,31 @@ describe Journey do
 
   end
 
-  describe '#add_station_to_current_journey_hash' do
+  describe '#begin' do
 
     it 'adds the origin station to current journey hash' do
       journey.begin("Aldgate")
       expect(journey.current_journey[:origin]).to eq "Aldgate"
     end
 
+  end
+
+  describe '#terminate' do
+
     it 'adds the destination station to current journey hash' do
       journey.terminate("Aldgate")
       expect(journey.current_journey[:destination]).to eq "Aldgate"
     end
 
+  end
+
+  describe '#current_journey' do
+
+    it "returns a journey hash when you call current journey after a completed journey" do
+      journey.begin("Aldgate")
+      journey.terminate("Kings Cross")
+      expect(journey.current_journey).to include(origin: "Aldgate", destination: "Kings Cross")
+    end
   end
 
 end
