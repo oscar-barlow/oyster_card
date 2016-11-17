@@ -5,8 +5,13 @@ class Journey
   def initialize(origin,destination)
     @origin = origin
     @destination = destination
+    
   end
 
-  def start(station)
+  def in_journey?
+    @origin
   end
+
+
+
 end

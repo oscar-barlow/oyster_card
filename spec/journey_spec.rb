@@ -22,6 +22,20 @@ describe Journey do
 
   end
 
+  describe '#in_journey?' do
+
+    it 'returns true if the journey is incomplete' do
+      journey = create_journey(origin: "Aldgate")
+      expect(journey.in_journey?).to be_truthy
+    end
+
+    it 'returns false if the journey is complete' do
+      journey = create_journey(origin: nil, destination: nil)
+      expect(journey.in_journey?).to be_falsey
+    end
+
+  end
+
 end
 
 def create_journey(arguments)
