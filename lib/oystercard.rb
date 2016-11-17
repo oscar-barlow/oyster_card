@@ -6,11 +6,10 @@ class Oystercard
 
   MAXIMUM_BALANCE = 90
   MINIMUM_BALANCE = 1
-  FARE = 5
 
-  def initialize
+  def initialize(journey_klass)
     @balance = 0
-    @journey = {:entry_station => nil, :exit_station => nil}
+    @journey = journey_klass.new
     @journeys = []
   end
 
@@ -20,19 +19,18 @@ class Oystercard
   end
 
   def in_journey?
-    @journey[:entry_station] != nil
+    @journey.in_journey? != nil
   end
 
   def touch_out(station)
-    deduct(FARE)
-    add_station_to_journey_hash("exit_station", station)
+    @journey.terminate(station)
+    deduct(@journey.fare)
     add_journey_to_journeys_list
-    clear_entry_station
   end
 
   def touch_in(station)
     fail "Pauper" if below_minimum_balance?
-    add_station_to_journey_hash("entry_station", station)
+    @journey.begin(station)
   end
 
   def makes_card_full?(amount)
@@ -43,16 +41,8 @@ class Oystercard
     @balance < MINIMUM_BALANCE
   end
 
-  def clear_entry_station
-    @journey[:entry_station] = nil
-  end
-
-  def add_station_to_journey_hash(key, station)
-    @journey[key.to_sym] = station
-  end
-
   def add_journey_to_journeys_list
-    @journeys << @journey
+    @journeys << @journey.current_journey
   end
 
   private

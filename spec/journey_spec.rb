@@ -2,7 +2,7 @@ require 'journey'
 
 describe Journey do
 
-  subject (:journey) {described_class.new}
+  subject (:journey) {described_class.new(Journey)}
 
   describe '#in_journey?' do
 
