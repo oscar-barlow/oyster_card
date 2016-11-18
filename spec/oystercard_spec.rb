@@ -4,8 +4,9 @@ describe Oystercard do
   subject(:travelcard) {described_class.new(Journey, JourneyLog)}
   subject(:empty_travelcard) {described_class.new(Journey, JourneyLog)}
 
-  let(:entry_station) {double :entry_station }
-  let(:exit_station) {double :exit_station}
+  let(:entry_station) {double(zone: 1) }
+  let(:exit_station) {double(zone: 1)}
+  let(:far_station) {double(zone: 5)}
 
   before(:each) do
     travelcard.top_up(20)
@@ -66,24 +67,22 @@ describe Oystercard do
 
   end
 
-  describe '#touch_out()' do
+  context '#touch_out()' do
 
-    it "should reduce balance by #{Journey::MINIMUM_FARE} when you touch out" do
+    before(:each) do
       travelcard.touch_in(entry_station)
+    end
+
+    it "should reduce balance by #{Journey::MINIMUM_FARE} when you touch out from a journey of close stations" do
       expect { travelcard.touch_out(exit_station) }.to change{travelcard.balance}.by(-Journey::MINIMUM_FARE)
     end
 
+    it 'should reduce balance by the difference of the stations\' zones when you touch out from a journey of far stations' do
+      expect { travelcard.touch_out(far_station) }.to change{travelcard.balance}.by(-4)
+    end
+
   end
-  #let's test this when we have finish extractin journey_log class
-  # describe '#journeys' do
-  #     let (:journey) {double :journey}
-  #     let (:journeys) {double :journey_log}
-  #     allow(:journeys).to_receive(:log).and_return(:journey)
-  #     it 'shows us a list of completed journeys' do
-  #
-  #       expect
-  #     end
-  # end
+
   describe "error handling" do
 
     it "should raise an error when a top up takes the balance over 90" do

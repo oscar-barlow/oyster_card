@@ -23,7 +23,9 @@ class Journey
 
   def fare
     return PENALTY_FARE if incomplete_journey?
-    return MINIMUM_FARE
+    zones = [@current[:origin].zone, @current[:destination].zone]
+    calculated_fare = zones.max - zones.min
+    calculated_fare > MINIMUM_FARE ? calculated_fare : MINIMUM_FARE
   end
 
   def incomplete_journey?
