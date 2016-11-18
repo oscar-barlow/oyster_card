@@ -1,9 +1,8 @@
 require "oystercard"
 
 describe Oystercard do
-
-  subject(:travelcard) {described_class.new(Journey)}
-  subject(:empty_travelcard) {described_class.new(Journey)}
+  subject(:travelcard) {described_class.new(Journey, JourneyLog)}
+  subject(:empty_travelcard) {described_class.new(Journey, JourneyLog)}
 
   let(:entry_station) {double :entry_station }
   let(:exit_station) {double :exit_station}
@@ -66,29 +65,16 @@ describe Oystercard do
     end
 
   end
-
-  describe '#journeys' do
-
-    it 'can store more than 1 journey' do
-      2.times {
-        travelcard.touch_in(entry_station)
-        travelcard.touch_out(exit_station)
-      }
-      expect(travelcard.journeys.count).to eq 2
-    end
-
-    it "has an empty list of journeys by default" do
-      expect(travelcard.journeys).to be_empty
-    end
-
-    it "creates one journey when you touch in and then touch out" do
-      travelcard.touch_in(entry_station)
-      travelcard.touch_out(exit_station)
-      expect(travelcard.journeys.length).to be 1
-    end
-
-  end
-
+  #let's test this when we have finish extractin journey_log class
+  # describe '#journeys' do
+  #     let (:journey) {double :journey}
+  #     let (:journeys) {double :journey_log}
+  #     allow(:journeys).to_receive(:trips).and_return(:journey)
+  #     it 'shows us a list of completed journeys' do
+  #
+  #       expect
+  #     end
+  # end
   describe "error handling" do
 
     it "should raise an error when a top up takes the balance over 90" do

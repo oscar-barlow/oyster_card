@@ -1,4 +1,5 @@
 require_relative 'journey'
+require_relative 'journey_log'
 
 class Oystercard
 
@@ -7,10 +8,10 @@ class Oystercard
   MAXIMUM_BALANCE = 90
   MINIMUM_BALANCE = 1
 
-  def initialize(journey_klass)
+  def initialize(journey_klass, journey_log_klass)
     @balance = 0
     @journey = journey_klass.new
-    @journeys = []
+    @journeys = journey_log_klass.new
   end
 
   def top_up(amount)
@@ -43,7 +44,7 @@ class Oystercard
   end
 
   def add_journey_to_journeys_list
-    @journeys << @journey.current_journey
+    @journeys.trips << @journey.current_journey
   end
 
   private
