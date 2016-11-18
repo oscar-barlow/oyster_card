@@ -6,4 +6,7 @@ class JourneyLog
     @trips = []
   end
 
+  def add(journey)
+    @trips << journey
+    end
 end
