@@ -7,6 +7,8 @@ class JourneyLog
   end
 
   def add(journey)
+    fail "You can only add journey hashes to the trips list" if !journey.is_a? Hash
     @trips << journey
-    end
+  end
+
 end
