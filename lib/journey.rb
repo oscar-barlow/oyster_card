@@ -1,16 +1,16 @@
 class Journey
 
-  attr_reader :current_journey, :fare
+  attr_reader :current, :fare
 
   MINIMUM_FARE = 1
   PENALTY_FARE = 6
 
   def initialize
-    @current_journey = {origin: nil, destination: nil}
+    @current = {origin: nil, destination: nil}
   end
 
   def in_journey?
-    @current_journey[:origin] != nil
+    @current[:origin] != nil
   end
 
   def begin(station)
@@ -27,13 +27,13 @@ class Journey
   end
 
   def incomplete_journey?
-    @current_journey[:origin] == nil || @current_journey[:destination] == nil
+    @current[:origin] == nil || @current[:destination] == nil
   end
 
   private
 
     def add_station_to_current_journey(point, station)
-      @current_journey[point] = station
+      @current[point] = station
     end
 
 end

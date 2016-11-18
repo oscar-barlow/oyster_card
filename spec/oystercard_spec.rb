@@ -57,7 +57,16 @@ describe Oystercard do
 
   end
 
-  describe 'touching in and out' do
+  describe '#touch_in()' do
+
+    it 'charges you a penalty fare if you didn\'t touch out last time' do
+      travelcard.touch_in(entry_station)
+      expect { travelcard.touch_in(entry_station) }.to change{travelcard.balance}.by(-Journey::PENALTY_FARE)
+    end
+
+  end
+
+  describe '#touch_out()' do
 
     it "should reduce balance by #{Journey::MINIMUM_FARE} when you touch out" do
       travelcard.touch_in(entry_station)
@@ -69,7 +78,7 @@ describe Oystercard do
   # describe '#journeys' do
   #     let (:journey) {double :journey}
   #     let (:journeys) {double :journey_log}
-  #     allow(:journeys).to_receive(:trips).and_return(:journey)
+  #     allow(:journeys).to_receive(:log).and_return(:journey)
   #     it 'shows us a list of completed journeys' do
   #
   #       expect

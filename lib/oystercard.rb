@@ -32,6 +32,7 @@ class Oystercard
 
   def touch_in(station)
     fail "Pauper" if below_minimum_balance?
+    touch_out(nil) if in_journey?
     @journey.begin(station)
   end
 
@@ -44,7 +45,7 @@ class Oystercard
   end
 
   def add_journey_to_journeys_list
-    @journeys.trips << @journey.current_journey
+    @journeys.log << @journey.current
   end
 
   private

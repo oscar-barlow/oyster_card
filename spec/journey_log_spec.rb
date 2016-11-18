@@ -5,34 +5,26 @@ describe JourneyLog do
   let (:journey) {double :journey}
 
   before do
-    allow(journey).to receive(:current_journey).and_return({:origin => 'origin station', :destination => 'destination station'})
+    allow(journey).to receive(:current).and_return({:origin => 'origin station', :destination => 'destination station'})
   end
 
-  describe '#trips' do
+  describe '#log' do
 
-    it "should be have an empty trips list when it initializes" do
-      expect(subject.trips).to be_empty
+    it "should be have an empty log when it initializes" do
+      expect(subject.log).to be_empty
     end
 
-    it 'should add a journey to its trips list' do
-      journeylog.add(journey.current_journey)
-      expect(journeylog.trips).to include journey.current_journey
-    end
-
-  end
-
-  describe '#current_journey' do
-
-    it 'should initialize with an empty current journey hash' do
-      expect(subject.current_journey).to be_empty
+    it 'should add a journey to its log' do
+      journeylog.add(journey.current)
+      expect(journeylog.log).to include journey.current
     end
 
   end
 
   describe 'error handling' do
 
-    it "should fail if you try to add <not a hash> to trips" do
-      message = "You can only add journey hashes to the trips list"
+    it "should fail if you try to add <not a hash> to log" do
+      message = "You can only add journey hashes to the log"
       expect{ journeylog.add("foo") }.to raise_error(RuntimeError, message)
     end
 
